@@ -17,6 +17,10 @@ class Poeltl:
     def check_answer(input, answer):
         
         return input == answer
+
+    def check_division(self, guess, division):
+        if self.guess == division:
+            print('correct')
     def check_team(self, guess, team):
         if self.guess == team:
             print('correct')
