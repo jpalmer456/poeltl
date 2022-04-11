@@ -17,6 +17,9 @@ class Poeltl:
     def check_answer(input, answer):
         
         return input == answer
+    def check_team(self, guess, team):
+        if self.guess == team:
+            print('correct')
 
     def __init__(self, game, name):
         self.game = game
