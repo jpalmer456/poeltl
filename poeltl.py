@@ -29,3 +29,4 @@ class Poeltl:
         self.game = game
         self.name = name
 
+    print("hi")
