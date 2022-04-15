@@ -22,8 +22,8 @@ class Player:
  
         Args:
             game (Poeltl): snapshot of the current game
-	Returns:
-		str: the player’s guess
+	    Returns:
+		    str: the player’s guess
         """
 class HumanPlayer(Player):
     """subclass of Player class that inherits __init__() method but overrides turn() method. It will take players move as input and return it
