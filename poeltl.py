@@ -1,32 +1,61 @@
-# Poeltl Game!
-class Poeltl:
-    """ Poeltl board display 
-   Attributes:
-            game (poeltl): game display
+import random
+ 
+class Player:
+    """Parent class that will be inhereted to subclass of HumanPlayer and ComputerPlayer
+    
+    Attributes:
+        name (str): name of the player
     """
-    def __init__(self, game):
-        """Object in the poeltl
+    def __init__(self, name):
+        """initializes a player with a name
+
         Args:
-            game (poeltl): game display
+            name (str): name of the player
         """
-        self.game = game
-
-    def __init__(self, game):
-        self.game = game
         
-    def check_answer(input, answer):
-        
-        return input == answer
+    def turn(self, game):
+        """_summary_
 
-    def check_division(self, guess, division):
-        if self.guess == division:
-            print('correct')
-    def check_team(self, guess, team):
-        if self.guess == team:
-            print('correct')
+        Args:
+            game (_type_): _description_
+        """
+class HumanPlayer(Player):
+    """subclass of Player class that inherits __init__() method
+    """
+    def turn(self, game):
+        """a method that will keep track of turns
 
-    def __init__(self, game, name):
-        self.game = game
-        self.name = name
-        
-    #this is a test
+        Args:
+            game (_type_): _description_
+        """
+      
+class ComputerPlayer(Player):
+  
+    def __init__(self):
+  
+    def turn(self, game):
+      
+class Poeltl:
+    def __init__(self, file):
+       self.f = open(file, 'r')
+      
+    def getPlayer():
+       #chooses random players
+    def reveal_hint():
+       #reveals hint
+    def check_answer():
+       #check whether the answer is correct
+    def guessed_answers():
+   #     #gathers guessed names and deletes them out of the unguessed player names
+    def play():
+       #plays the game
+    def turn():
+       #take turn guessing players
+    def outcome():
+       #result of who wins
+
+def read_file(path):
+    #reads in the file and put players in a dictionary as a key and their stats as the value
+
+def main():
+    
