@@ -10,9 +10,6 @@ class Player:
         name (str): name of the player
     """
 
-   def __init__(self, name):
-    """initializes a player with a name
-    """
     def __init__(self, name):
         """initializes a player with a name
 
