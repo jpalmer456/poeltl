@@ -101,7 +101,6 @@ class Poeltl:
 	    Returns whether the guess was right or wrong.
         """
     
-<<<<<<< HEAD
     def reveal_hint(self, player_guess, stats, answer):
         """ Reveals a hint to the user if they get the answer wrong.
         Args:
@@ -157,6 +156,4 @@ def main(player_list, human_player, computer_player = False, compyter_player_lis
 if __name__ == "__main__":
     args = parse_args(sys.argv[1:])
     main(args.player_list, args.names, args.computer_player, args.computer_player_list)
-=======
->>>>>>> 2693c6a79398cc48f21aa7c3c661bdf5ba091df6
->>>>>>> 2d631bd3c1118f7eedaec78cbaea0d967073ce62
+
