@@ -98,5 +98,60 @@ class Poeltl:
     Returns:
 	    Returns whether the guess was right or wrong.
         """
-    
->>>>>>> 2d631bd3c1118f7eedaec78cbaea0d967073ce62
+
+    def reveal_hint(self, player_guess, stats, answer):
+        """ Reveals a hint to the user if they get the answer wrong.
+        Args:
+        	player_guess (str): the guess the user makes
+        	stats (float/str):
+	    	Answer (str): the stat revealed about the player we’ll show the user
+        Returns:
+	        Returns the stat (hint) about the player.
+        """
+  
+    def guessed_answers(self):
+        """ Checks if the guess of the NBA player is right or wrong.
+        Args:
+	        player_guess (str) = the guess the user makes
+	        answer (str) = the correct answer of the player
+        Returns:
+	        Returns whether the guess was right or wrong.
+        """
+  
+    def play(self):
+        """ play the game
+	    
+        Side effects:
+        """
+    def turn(self, player):
+        """ manage players’s turn.
+        Args:
+	        Player(player): the player turn,
+        Side effect : 
+            Modify —---- functions 
+        """
+    def outcome(self):
+        """Determine if the game is over.
+	    Returns: 
+            “Win” or “lose” if all the players have lost, or None if the game is not over”””
+ 
+ 
+        """
+ 
+def main(player_list, human_player, computer_player = False, compyter_player_list = None):
+    """Set up and play a game of hangman.
+ 
+   Args:
+       player_list (str): lists of players and stats
+       human_players (list of str): names of the human players, if any.
+       computer_player (bool, optional): if True, a computer player will be
+           created. Defaults to False.
+       computer_player_list (list of str, optional): a list of players that the
+           computer player "knows". If None, player_list will be used. Defaults
+           to None.
+    """
+
+if __name__ == "__main__":
+    main(player_list, names, computer_player, computer_player_list)
+
+
