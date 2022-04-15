@@ -154,6 +154,5 @@ def main(player_list, human_player, computer_player = False, compyter_player_lis
     """
 
 if __name__ == "__main__":
-    args = parse_args(sys.argv[1:])
-    main(args.player_list, args.names, args.computer_player, args.computer_player_list)
+    main(player_list, names, computer_player, computer_player_list)
 
