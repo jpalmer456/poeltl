@@ -9,24 +9,13 @@ class Player:
     Attributes:
         name (str): name of the player
     """
-<<<<<<< HEAD
+
    def __init__(self, name):
     """initializes a player with a name
- 
-=======
+    """
     def __init__(self, name):
         """initializes a player with a name
 
-<<<<<<< HEAD
-class Poeltl:
-    def __init__(self, game):
-        self.game = game
-        
-    def check_answer(input, answer):
-        
-        return input == answer
-=======
->>>>>>> 2d631bd3c1118f7eedaec78cbaea0d967073ce62
         Args:
             name (str): name of the player
     """
