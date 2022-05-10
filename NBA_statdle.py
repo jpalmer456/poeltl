@@ -23,7 +23,7 @@ class Game:
         return player
         
     def play(self): #Abdul Jesse Jake Wonwoo TJ        
-        cp = self.choose_player()
+        chosen_player = self.choose_player()
         score = 100
         round = 1
         
@@ -32,29 +32,29 @@ class Game:
         while True:    
             print("score: ", score - (round - 1) * 10)
             print("round: ", round)
-            print(cp)
+            print(chosen_player)
             
             self.read_in_score("Highest_Score.txt")
             
-            ug = input(f"Make a guess: ")
+            user_guess = input(f"Make a guess: ")
             
             player_list = self.filtered_df["FULL_NAME"].str.lower().values.tolist()
             
-            newlist = [x.lower() for x in player_list if ug.lower() in x]
+            newlist = [x.lower() for x in player_list if user_guess.lower() in x]
             
             if len(newlist) == 0:
                 print(f"Your guess is not in our database!")
                 continue
             
-            ugs = self.filtered_df[self.filtered_df["FULL_NAME"] == ug].index.values
-            cps = self.filtered_df[self.filtered_df["FULL_NAME"] == cp["FULL_NAME"]].index.values
+            user_guesss = self.filtered_df[self.filtered_df["FULL_NAME"] == user_guess].index.values
+            chosen_player_stats = self.filtered_df[self.filtered_df["FULL_NAME"] == chosen_player["FULL_NAME"]].index.values
             
-            guess_df = self.filtered_df.iloc[ugs]
-            answer_df = self.filtered_df.iloc[cps]
+            guess_df = self.filtered_df.iloc[user_guesss]
+            answer_df = self.filtered_df.iloc[chosen_player_stats]
             
-            a = guess_df.merge(answer_df, how="outer")
+            merged_df = guess_df.merge(answer_df, how="outer")
                 
-            if ug.lower() == cp["FULL_NAME"].lower():
+            if user_guess.lower() == chosen_player["FULL_NAME"].lower():
                 print("You are correct") 
                 result = score.__sub__(10 * (round - 1))
                 print(f"Your score is: {result}")
@@ -65,33 +65,33 @@ class Game:
                 
                 with open("scores.txt", "a", encoding="utf-8") as f:
                     f.write(str(result) + "\n")
-                bs = self.find_score("Highest_Score.txt")
-                if int(bs) < score:
+                best_score = self.find_score("Highest_Score.txt")
+                if int(best_score) < result:
                     print(f"Conglatulations! You have beaten the record!")
-                    self.high_score("Highest_Score.txt", score)
+                    self.high_score("Highest_Score.txt", result)
                 break
             
             else:
-                if a["TEAM"][0] == a["TEAM"][1]:
+                if merged_df["TEAM"][0] == merged_df["TEAM"][1]:
                     print("You got the team correct!")
                 else:
                     print("You got the team wrong!")
 
-                if a["POS"][0] in a["POS"][1]:
+                if merged_df["POS"][0] in merged_df["POS"][1]:
                     print("You got the position correct!") 
                 else:
                     print("You got the position wrong!")
 
-                if a["MPG"][0] > a["MPG"][1]:
+                if merged_df["MPG"][0] > merged_df["MPG"][1]:
                     print("Your guess has higher MPG!")
-                elif a["MPG"][0] < a["MPG"][1]:
+                elif merged_df["MPG"][0] < merged_df["MPG"][1]:
                     print("Your guess has lower MPG!")
                 else:
                     print("You got the MPG correct!")
 
-                if a["PPG"][0] > a["PPG"][1]:
+                if merged_df["PPG"][0] > merged_df["PPG"][1]:
                     print("Your guess has higher PPG!")
-                elif a["PPG"][0] < a["PPG"][1]:
+                elif merged_df["PPG"][0] < merged_df["PPG"][1]:
                     print("Your guess has lower PPG!")
                 else:
                     print("You got the PPG correct!")
