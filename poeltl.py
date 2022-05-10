@@ -1,157 +1,150 @@
-from argparse import ArgumentParser
-import sys
-import random
 import pandas as pd
+import random
+import re
+import sys
+import seaborn as sns
+import matplotlib.pyplot as plt
+from argparse import ArgumentParser
 
-class Player:
-   """Parent class that will be inherited to subclass of HumanPlayer and ComputerPlayer
-  
-    Attributes:
-        name (str): name of the player
-    """
+class Game:
+    def __init__(self, path, name = None): #Abdul
+        self.df = pd.read_csv(path, encoding = "ISO-8859-1")
+        name = input(f"Input your name: ")
+        self.name = name
+        
+        self.clean_data()
+        
+    def clean_data(self): #Jesse
+        self.filtered_df = self.df[["FULL_NAME", "TEAM", "POS", "MPG", "PPG"]] if self.df is not None else print("This program is not running")
+        
+    def choose_player(self): #Jake
+        player = self.filtered_df.iloc[random.randint(0, 715)]
+        
+        return player
+        
+    def play(self): #Abdul Jesse Jake Wonwoo TJ        
+        cp = self.choose_player()
+        score = 100
+        round = 1
+        
+        print("Name of the player: ",self.name)
+        
+        while True:    
+            print("score: ", score - (round - 1) * 10)
+            print("round: ", round)
+            print(cp)
+            
+            self.read_in_score("Highest_Score.txt")
+            
+            ug = input(f"Make a guess: ")
+            
+            player_list = self.filtered_df["FULL_NAME"].str.lower().values.tolist()
+            
+            newlist = [x.lower() for x in player_list if ug.lower() in x]
+            
+            if len(newlist) == 0:
+                print(f"Your guess is not in our database!")
+                continue
+            
+            ugs = self.filtered_df[self.filtered_df["FULL_NAME"] == ug].index.values
+            cps = self.filtered_df[self.filtered_df["FULL_NAME"] == cp["FULL_NAME"]].index.values
+            
+            guess_df = self.filtered_df.iloc[ugs]
+            answer_df = self.filtered_df.iloc[cps]
+            
+            a = guess_df.merge(answer_df, how="outer")
+                
+            if ug.lower() == cp["FULL_NAME"].lower():
+                print("You are correct") 
+                result = score.__sub__(10 * (round - 1))
+                print(f"Your score is: {result}")
+                
+                if result == 0:
+                    print(f"You are out of guesses!")
+                    break
+                
+                with open("scores.txt", "a", encoding="utf-8") as f:
+                    f.write(str(result) + "\n")
+                bs = self.find_score("Highest_Score.txt")
+                if int(bs) < score:
+                    print(f"Conglatulations! You have beaten the record!")
+                    self.high_score("Highest_Score.txt", score)
+                break
+            
+            else:
+                if a["TEAM"][0] == a["TEAM"][1]:
+                    print("You got the team correct!")
+                else:
+                    print("You got the team wrong!")
 
-    def __init__(self, name):
-        """initializes a player with a name
+                if a["POS"][0] in a["POS"][1]:
+                    print("You got the position correct!") 
+                else:
+                    print("You got the position wrong!")
 
-        Args:
-            name (str): name of the player
-    """
-      
-   def turn(self, game):
-        """Take a turn
- 
-        Args:
-            game (Poeltl): snapshot of the current game
-	    Returns:
-		    str: the player’s guess
-        """
-class HumanPlayer(Player):
-    """subclass of Player class that inherits __init__() method but overrides turn() method. It will take players move as input and return it
-	Attributes:
-        name (str): name of the player
-    """
-   def turn(self, game):
-        """a method that will keep track of turns
- 
-        Args:
-            game (Poeltl): represents the current state of the game
-	Returns:
-	    str: the player’s guess
-        """
+                if a["MPG"][0] > a["MPG"][1]:
+                    print("Your guess has higher MPG!")
+                elif a["MPG"][0] < a["MPG"][1]:
+                    print("Your guess has lower MPG!")
+                else:
+                    print("You got the MPG correct!")
+
+                if a["PPG"][0] > a["PPG"][1]:
+                    print("Your guess has higher PPG!")
+                elif a["PPG"][0] < a["PPG"][1]:
+                    print("Your guess has lower PPG!")
+                else:
+                    print("You got the PPG correct!")
+                round += 1
+                
+    def high_score(self, path, score): # Wonwoo
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(f"Your best score is: {score}")
+            
+    def read_in_score(self, path): # TJ
+        with open(path, "r", encoding="utf-8") as f:
+            line = f.readlines()
+            print(line)
+            
+    def find_score(self, path): # TJ
+        with open(path, "r", encoding="utf-8") as f:
+            line = f.readlines()
+            match = re.search(r"(?P<score>\d+)", str(line))
+            if match == None:
+                raise ValueError("You don't have any scores")
+
+            best_score = match.group(1)
+            
+            return best_score
+
+    def plot(self, path): # Abdul
+        with open(path) as f:
+            score = f.readlines()
+       
+        score = [int(x.strip()) for x in score]
+        score.sort()
+        
+        plt.plot(score, color='green', marker='o',mfc='green')
+        plt.ylabel('Score') 
+        plt.xlabel('Rounds') 
+        plt.title("Score Board") 
+        plt.show()
     
-class ComputerPlayer(Player):
-    """is a subclass of Player that overrides both __init__() and turn() methods. This class will make a computer player guess players.
-   
-Attributes:
-       name(str): name of the computer
-       player(list): list of strings from excel/txt file that computer can draw to guess competing against the player
-    """
- 
-    def __init__(self, name, player_list):
-        """this method will store name and player list.
- 
-        Args:
-           name(str): name of the computer
-           player_list(list): list of strings from panda that computer can draw to guess when taking turns
-        """
- 
-    def turn(self, game):
-       """this method will guess a player with randomly at first and then with using the hints, it will eventually guess the player
- 
-        Args:
-            game (Poeltl): represents the current game
-      
-        Returns:
-           guess (str): the word that computer is guessing
-        """
- 
-  
+    def __sub__(self, other): #Wonwoo
+        return self - other
+            
+def main(file): #Jake
+    game = Game(file, "Brian")
+    game.play()
+    game.plot("scores.txt")
     
-class Poeltl:
-    """Class used to create the framework of the Poeltl game where we the user has to guess an NBA player's name until they get the right player.
- 
-    Args:
-        file (panda): dataframe for opening the file
-    """
-
-
-    def __init__(self, file):
-        """Opens and reads the file using panda   
-
-    Args:
-        file (panda): dataframe for opening the file
-
-        """
-          
-    def getPlayer(self):
-        """ Chooses a player a random   
-    Attributes:
-        name(str): name of the computer
-        player(list): list of strings from excel/txt file that computer can draw to guess competing against the player
-        """
- 
-    def check_answer(self, player_guess, answer):
-        """ Checks if the guess of the NBA player is right or wrong.
-    Args:
-	    player_guess (str): the guess the user makes
-	    answer (str): the correct answer of the player
-    Returns:
-	    Returns whether the guess was right or wrong.
-        """
-
-    def reveal_hint(self, player_guess, stats, answer):
-        """ Reveals a hint to the user if they get the answer wrong.
-        Args:
-        	player_guess (str): the guess the user makes
-        	stats (float/str):
-	    	Answer (str): the stat revealed about the player we’ll show the user
-        Returns:
-	        Returns the stat (hint) about the player.
-        """
-  
-    def guessed_answers(self):
-        """ Checks if the guess of the NBA player is right or wrong.
-        Args:
-	        player_guess (str) = the guess the user makes
-	        answer (str) = the correct answer of the player
-        Returns:
-	        Returns whether the guess was right or wrong.
-        """
-  
-    def play(self):
-        """ play the game
-	    
-        Side effects:
-        """
-    def turn(self, player):
-        """ manage players’s turn.
-        Args:
-	        Player(player): the player turn,
-        Side effect : 
-            Modify —---- functions 
-        """
-    def outcome(self):
-        """Determine if the game is over.
-	    Returns: 
-            “Win” or “lose” if all the players have lost, or None if the game is not over”””
- 
- 
-        """
- 
-def main(player_list, human_player, computer_player = False, compyter_player_list = None):
-    """Set up and play a game of hangman.
- 
-   Args:
-       player_list (str): lists of players and stats
-       human_players (list of str): names of the human players, if any.
-       computer_player (bool, optional): if True, a computer player will be
-           created. Defaults to False.
-       computer_player_list (list of str, optional): a list of players that the
-           computer player "knows". If None, player_list will be used. Defaults
-           to None.
-    """
+def parse_args(arglist): #Jesse
+    parser = ArgumentParser()
+    parser.add_argument("file", help="path to NBA player list csv file")
+    args = parser.parse_args(arglist)
+    return args
 
 if __name__ == "__main__":
-    main(player_list, names, computer_player, computer_player_list)
-
+    args = parse_args(sys.argv[1:])
+    main(args.file)
 
