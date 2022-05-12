@@ -7,7 +7,13 @@ import matplotlib.pyplot as plt
 from argparse import ArgumentParser
 
 class Game:
-    def __init__(self, path, name = None): #Abdul
+    """ Base class for NBA statdle game
+    
+    Attributes:
+        name(str,optional):name of the player.
+        path(str): path to the basketball players information file    
+    """
+    def __init__(self, path, name = None): #Abdulrezak
         self.df = pd.read_csv(path, encoding = "ISO-8859-1")
         name = input(f"Input your name: ")
         self.name = name
@@ -22,7 +28,7 @@ class Game:
         
         return player
         
-    def play(self): #Abdul Jesse Jake Wonwoo TJ        
+    def play(self): #Abdulrezak Jesse Jake Wonwoo TJ        
         chosen_player = self.choose_player()
         score = 100
         round = 1
@@ -117,7 +123,12 @@ class Game:
             
             return best_score
 
-    def plot(self, path): # Abdul
+    def plot(self, path): # Abdulrezak
+        """Visuals of the player score
+
+        Args:
+            path (str): the path to the score file. 
+        """
         with open(path) as f:
             score = f.readlines()
        
