@@ -21,6 +21,9 @@ class Game:
         self.clean_data()
         
     def clean_data(self): #Jesse
+        """ Filter the dataframe only contain columns "FULL_NAME", "TEAM",
+            "POS", "MPG", and "PPG".
+        """
         self.filtered_df = self.df[["FULL_NAME", "TEAM", "POS", "MPG", "PPG"]] if self.df is not None else print("This program is not running")
         
     def choose_player(self): #Jake
@@ -150,6 +153,17 @@ def main(file): #Jake
     game.plot("scores.txt")
     
 def parse_args(arglist): #Jesse
+    """ Parse command-line argument.
+    
+    Expect one mandatory argument:
+        - str: a path to a csv file that contains all player data.
+    
+    Args:
+        arglist (list of str): command-line arguments.
+    
+    Returns:
+        namespace: an object with one attribute, the file path.
+    """
     parser = ArgumentParser()
     parser.add_argument("file", help="path to NBA player list csv file")
     args = parser.parse_args(arglist)
