@@ -27,6 +27,11 @@ class Game:
         self.filtered_df = self.df[["FULL_NAME", "TEAM", "POS", "MPG", "PPG"]] if self.df is not None else print("This program is not running")
         
     def choose_player(self): #Jake
+        """Selects random player that the user will guess for
+
+        Returns:
+            string: Player that users will guess
+        """
         player = self.filtered_df.iloc[random.randint(0, 715)]
         
         return player
@@ -148,6 +153,11 @@ class Game:
         return self - other
             
 def main(file): #Jake
+    """Runs the game and plots player score(s)
+
+    Args:
+        file (.csv): NBA players with their respective statistics
+    """
     game = Game(file, "Brian")
     game.play()
     game.plot("scores.txt")
