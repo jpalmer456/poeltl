@@ -11,7 +11,9 @@ class Game:
     
     Attributes:
         name(str,optional):name of the player.
-        path(str): path to the basketball players information file    
+        path(str): path to the basketball players information file
+        df(Pandas Dataframe): dataframe of the NBA players with stats
+        filtered_df(Pandas Dataframe): dataframe of the NBA players with stats but filtered
     """
     def __init__(self, path, name = None): #Abdulrezak
         self.df = pd.read_csv(path, encoding = "ISO-8859-1")
@@ -22,7 +24,10 @@ class Game:
         
     def clean_data(self): #Jesse
         """ Filter the dataframe only contain columns "FULL_NAME", "TEAM",
-            "POS", "MPG", and "PPG".
+            "POS", "MPG", and "PPG" if self.df is not None. Else it prints out "This program is not running"
+            
+        Args:
+        filtered_df(Pandas Dataframe): the dataframe of NBA players with filtered stats
         """
         self.filtered_df = self.df[["FULL_NAME", "TEAM", "POS", "MPG", "PPG"]] if self.df is not None else print("This program is not running")
         
@@ -30,13 +35,31 @@ class Game:
         """Selects random player that the user will guess for
 
         Returns:
-            string: Player that users will guess
+            player(Pandas Dataframe): Dataframe of the Player that users will guess
         """
         player = self.filtered_df.iloc[random.randint(0, 715)]
         
         return player
         
-    def play(self): #Abdulrezak Jesse Jake Wonwoo TJ        
+    def play(self): #Abdulrezak Jesse Jake Wonwoo TJ
+        """This is where playing the guessing game will happen. It will prompt the user to input his/her name, input a player.
+        Then it will let the user know if the player is not in the database or if the user is correct or what stats they got
+        correct and wrong. When the user gets the guess correct, it will calculate the score then print out the result. If the user
+        has beaten the best record, it will congratulate the user, or else it will just write the score in the scores file.
+        Also, when the score becomes 0, it will quit the game because the user is out of guesses. If the user
+        guess was not correct, it will compare the stats of the user guessed player and the chosen player and print out what was
+        wrong and what was correct.
+        
+        Wonwoo was mainly in charge of this method. Skills of f-string was shown. TJ worked with Wonwoo
+        to meet the requirement of showing skills of with statement. Jake also contributed towards writing
+        this method to show the skill of merging dataframes. 
+        
+        Args:
+        chosen_player(Pandas Dataframe): Dataframe of the Player that users will guess
+        score(int): Starting score will be 100 and will be deducted 10 points each round.
+        round(int): Starting round. It will increase when the player guesses for the wrong player.
+        
+        """        
         chosen_player = self.choose_player()
         score = 100
         round = 1
@@ -46,7 +69,6 @@ class Game:
         while True:    
             print("score: ", score - (round - 1) * 10)
             print("round: ", round)
-            print(chosen_player)
             
             self.read_in_score("Highest_Score.txt")
             
@@ -112,6 +134,15 @@ class Game:
                 round += 1
                 
     def high_score(self, path, score): # Wonwoo
+        """This method will read in a file and take the score of the game to record.
+
+        Args:
+            path (string): file to record the best score
+            score (int): score of the game that user scored.
+            
+        Side Effects:
+            it will create a file if there is none and record the best score.
+        """
         with open(path, "w", encoding="utf-8") as f:
             f.write(f"Your best score is: {score}")
             
@@ -150,6 +181,15 @@ class Game:
         plt.show()
     
     def __sub__(self, other): #Wonwoo
+        """magic method that will calculate the score
+
+        Args:
+            other (int): it will take in a number which will be (round - 1) * 10.
+            This will able us to calculate the score number of rounds taken for the user to guess correct number * 10.
+
+        Returns:
+            int: it will return the subtraction from the score(100) - (round - 1) * 10.
+        """
         return self - other
             
 def main(file): #Jake
@@ -158,7 +198,7 @@ def main(file): #Jake
     Args:
         file (.csv): NBA players with their respective statistics
     """
-    game = Game(file, "Brian")
+    game = Game(file)
     game.play()
     game.plot("scores.txt")
     
