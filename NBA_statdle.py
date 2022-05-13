@@ -16,6 +16,12 @@ class Game:
         filtered_df(Pandas Dataframe): dataframe of the NBA players with stats but filtered
     """
     def __init__(self, path, name = None): #Abdulrezak
+        """This will initailize the class with a file name of a csv file.
+
+        Args:
+            path (string): name of the csv file with NBA players
+            name (string, optional): Name of the user who is playing the game. Defaults to None.
+        """
         self.df = pd.read_csv(path, encoding = "ISO-8859-1")
         name = input(f"Input your name: ")
         self.name = name
@@ -41,7 +47,7 @@ class Game:
         
         return player
         
-    def play(self): #Abdulrezak Jesse Jake Wonwoo TJ
+    def play(self): #Wonwoo
         """This is where playing the guessing game will happen. It will prompt the user to input his/her name, input a player.
         Then it will let the user know if the player is not in the database or if the user is correct or what stats they got
         correct and wrong. When the user gets the guess correct, it will calculate the score then print out the result. If the user
@@ -50,9 +56,8 @@ class Game:
         guess was not correct, it will compare the stats of the user guessed player and the chosen player and print out what was
         wrong and what was correct.
         
-        Wonwoo was mainly in charge of this method. Skills of f-string was shown. TJ worked with Wonwoo
-        to meet the requirement of showing skills of with statement. Jake also contributed towards writing
-        this method to show the skill of merging dataframes. 
+        Wonwoo was mainly in charge of this method. Skills of f-string was shown. 
+        Jake also contributed towards writing this method to show the skill of merging dataframes. 
         
         Args:
         chosen_player(Pandas Dataframe): Dataframe of the Player that users will guess
@@ -147,11 +152,27 @@ class Game:
             f.write(f"Your best score is: {score}")
             
     def read_in_score(self, path): # TJ
+        """this method reads in the file that contains the recorded scores
+
+        Args:
+            path (string): name of the file
+        """
         with open(path, "r", encoding="utf-8") as f:
             line = f.readlines()
             print(line)
             
     def find_score(self, path): # TJ
+        """This method looks for the best score in the a file with regex.
+
+        Args:
+            path (string): name of the file
+
+        Raises:
+            ValueError: If there is no match it will raise a value error
+
+        Returns:
+            best_score(int): It returns the match which is the best score
+        """
         with open(path, "r", encoding="utf-8") as f:
             line = f.readlines()
             match = re.search(r"(?P<score>\d+)", str(line))
@@ -163,7 +184,7 @@ class Game:
             return best_score
 
     def plot(self, path): # Abdulrezak
-        """Visuals of the player score
+        """Visualizes the scores of each games. It will show if the player has made progress or not. It also enables the users to compare between games.
 
         Args:
             path (str): the path to the score file. 
