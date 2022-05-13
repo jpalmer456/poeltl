@@ -223,3 +223,7 @@ if __name__ == "__main__":
     args = parse_args(sys.argv[1:])
     main(args.file)
 
+"""
+To run this program, enter in "python3 NBA_statdle.py NBA_stats.csv"
+Have fun :)
+"""
